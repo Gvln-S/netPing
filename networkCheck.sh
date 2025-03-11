@@ -15,7 +15,7 @@ function square_draw {
   local count=0
   while [ -n ${local_ip:$count:$[count + 1]} ]
   do 
-    echo "1"
+    echo "${local_ip:$count:$[count + 1]}"
     count=$[count + 1]
   done
 }
@@ -24,7 +24,7 @@ function local_connection {
   echo "
  _________________________________
 |               |                 |
-| local ip:     | $(hostname -I)    |
+| local ip:     | $(hostname -I)  
 |_______________|_________________|"
   square_draw
 }
