@@ -13,20 +13,47 @@ function gateway_connection {
 function square_draw {
   local_ip=$(hostname -I)
   local count=0
-  while [ -n ${local_ip:$count:$[count + 1]} ]
+  while [ -n "${local_ip:$count:1}" ]
   do 
-    echo "${local_ip:$count:$[count + 1]}"
-    count=$[count + 1]
+    ((count++))
   done
+  ((count = count * 2 + 8))
+  echo $count
 }
 
 function local_connection {
-  echo "
- _________________________________
-|               |                 |
-| local ip:     | $(hostname -I)  
-|_______________|_________________|"
-  square_draw
+  count=$(square_draw)
+  divider=$(( (count-1)/2 ))
+
+  for ((sup=0; sup<count; sup++))
+  do
+    echo -n "_"
+  done
+  echo
+
+  for ((row=1; row<3; row++))
+  do
+    echo -n "|"
+    for ((col=1; col<count-1; col++)); do
+      if [ $col -eq $divider ]; then
+        echo -n "|"
+      else
+        echo -n " "
+      fi
+    done
+    echo "|"
+  done
+
+  for ((col=0; col<count; col++))
+  do
+    if [ $col -eq $divider ] || [ $col -eq 0 ] || [ $col -eq $((count - 1)) ]
+    then
+      echo -n "|"
+    else
+      echo -n "_"
+    fi
+  done
+  echo
 }
 
 if [ -n "$1" ]
